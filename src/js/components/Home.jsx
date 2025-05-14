@@ -1,26 +1,38 @@
-import React from "react";
+import { tasks } from "fontawesome";
+import React, { useState } from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
-//create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-            
 
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+	const [inputValue, setInputValue] = useState("")
+	const [todos, setTodos] = useState([])
+
+	return (
+		<div className="container">
+			<h1>todos</h1>
+			<ul>
+				<input
+					type="text"
+					placeholder={todos.length === 0 ? "Add something to the list" : "What else do you need to do?"}
+					value={inputValue}
+					onChange={(e) => setInputValue(e.target.value)}
+					onKeyDown={(e) => {
+						if (e.key === "Enter" && inputValue.trim() !== "") {
+							setTodos(todos.concat(inputValue));
+							setInputValue("")
+						}
+					}}
+				/>
+				{todos.map((task, index) => (
+					<li key={index}>
+						{task}
+						<i
+							className="fa-solid fa-xmark"
+							onClick={() => setTodos(todos.filter((_, currentIndex) => index !== currentIndex))}
+						/>
+					</li>
+				))}
+			</ul>
+			<div className="task-count">{todos.length} {todos.length !== 1 ? "items left" : "item left"}</div>
 		</div>
 	);
 };
